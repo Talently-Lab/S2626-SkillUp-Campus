@@ -78,7 +78,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\r\n    \"id\": 1,\r\n    \"nombre\": \"Juan Perez\",\r\n    \"email\": \"juanperez@gmail.com\",\r\n    \"rol\": \"Alumno\"\r\n}"
+              "body": "{\r\n    \"id\": 1,\r\n    \"nombre\": \"Juan Perez\",\r\n    \"email\": \"juanperez@gmail.com\",\r\n    \"rol\": \"alumno\"\r\n}"
             },
             {
               "name": "400 Validation Error",
@@ -233,7 +233,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiQWx1bW5vIn0...\",\r\n    \"usuario\": {\r\n        \"id\": 1,\r\n        \"nombre\": \"Juan Perez\",\r\n        \"rol\": \"Alumno\"\r\n    }\r\n}"
+              "body": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiQWx1bW5vIn0...\",\r\n    \"usuario\": {\r\n        \"id\": 1,\r\n        \"nombre\": \"Juan Perez\",\r\n        \"rol\": \"alumno\"\r\n    }\r\n}"
             },
             {
               "name": "400 Validation Error",
@@ -951,7 +951,7 @@
                 }
               ],
               "cookie": [],
-              "body": "[\r\n  {\r\n    \"usuario\": {\r\n      \"id\": 1,\r\n      \"nombre\": \"Juan Perez\",\r\n      \"email\": \"juanperez@gmail.com\"\r\n    },\r\n    \"fecha_inscripcion\": \"2026-03-15T10:30:00Z\",\r\n    \"estado\": \"Inscripto\"\r\n  },\r\n  {\r\n    \"usuario\": {\r\n      \"id\": 2,\r\n      \"nombre\": \"Maria Gomez\",\r\n      \"email\": \"mariagomez@gmail.com\"\r\n    },\r\n    \"fecha_inscripcion\": \"2026-03-16T14:20:00Z\",\r\n    \"estado\": \"Inscripto\"\r\n  }\r\n]"
+              "body": "[\r\n  {\r\n    \"usuario\": {\r\n      \"id\": 1,\r\n      \"nombre\": \"Juan Perez\",\r\n      \"email\": \"juanperez@gmail.com\"\r\n    },\r\n    \"fecha_inscripcion\": \"2026-03-15T10:30:00Z\",\r\n    \"estado\": \"activa\"\r\n  },\r\n  {\r\n    \"usuario\": {\r\n      \"id\": 2,\r\n      \"nombre\": \"Maria Gomez\",\r\n      \"email\": \"mariagomez@gmail.com\"\r\n    },\r\n    \"fecha_inscripcion\": \"2026-03-16T14:20:00Z\",\r\n    \"estado\": \"activa\"\r\n  }\r\n]"
             },
             {
               "name": "403 Forbidden",
@@ -1245,7 +1245,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n    \"id\": 1,\n    \"usuario_id\": 1,\n    \"curso_id\": 1,\n    \"fecha_inscripcion\": \"2026-09-28T21:20:00Z\",\n    \"estado\": \"Inscripto\"\n}"
+              "body": "{\n    \"id\": 1,\n    \"usuario_id\": 1,\n    \"curso_id\": 1,\n    \"fecha_inscripcion\": \"2026-09-28T21:20:00Z\",\n    \"estado\": \"activa\"\n}"
             },
             {
               "name": "409 Conflict",
@@ -1348,7 +1348,7 @@
                 }
               ],
               "cookie": [],
-              "body": "[\r\n  {\r\n    \"curso\": {\r\n      \"id\": 1,\r\n      \"titulo\": \"Programación Backend con Node.js\",\r\n      \"descripcion\": \"Aprende Express, PostgreSQL y arquitectura en capas.\",\r\n      \"cupo_maximo\": 30,\r\n      \"activo\": true\r\n    },\r\n    \"fecha_inscripcion\": \"2026-09-28T21:20:00Z\",\r\n    \"estado\": \"Inscripto\"\r\n  }\r\n]"
+              "body": "[\r\n  {\r\n    \"curso\": {\r\n      \"id\": 1,\r\n      \"titulo\": \"Programación Backend con Node.js\",\r\n      \"descripcion\": \"Aprende Express, PostgreSQL y arquitectura en capas.\",\r\n      \"cupo_maximo\": 30,\r\n      \"activo\": true\r\n    },\r\n    \"fecha_inscripcion\": \"2026-09-28T21:20:00Z\",\r\n    \"estado\": \"activa\"\r\n  }\r\n]"
             }
           ]
         }
