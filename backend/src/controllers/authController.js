@@ -6,7 +6,7 @@ const registrar = async (req, res) => {
     const { nombre, email, password} = req.body;
 
     const hash = await bcrypt.hash(password, 10);
-    const usuario = await Usuario.create({ nombre, email, password: hash})
+    const usuario = await Usuario.create({ nombre, email, password_hash: hash})
 
     return res.status(201).json({ 
       id: usuario.id,
