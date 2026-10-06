@@ -130,9 +130,22 @@ Response 200: [ { curso: {...}, fecha_inscripcion, estado } ]
 
 ---
 
+## Valores posibles para campos enumerados
+
+### `rol` (tabla usuarios)
+- `alumno` (default)
+- `admin`
+
+### `estado` (tabla inscripciones)
+- `activo` (default)
+- `inactivo`
+
+---
+
 ## Definiciones cerradas (25/09/2026)
 
 - ✅ Códigos de error consistentes (400, 401, 403, 404, 409) confirmados para todos los endpoints.
 - ✅ Paginación agregada a `GET /api/cursos`.
 - ✅ Nuevo endpoint `GET /api/cursos/:id/inscriptos` para que el admin vea la lista de inscriptos.
 - ✅ Formato de error de validación estandarizado (RFC 7807 simplificado), aplicado a todos los endpoints con `Body`.
+- ✅ Valores confirmados para `rol` (alumno/admin) y `estado` de inscripciones (activo/inactivo).
