@@ -3,12 +3,15 @@ const express = require("express");
 const cors = require("cors");
 const sequelize = require("./config/db");
 const authRoutes = require('./routes/authRoutes');
+const errorHandler = require('./middlewares/errorHandler');
 const app = express();
 
 // Middlewares base
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
+app.use(errorHandler);
+
 
 app.get("/", (req, res) => {
   res.send("Hola, el servidor está funcionando");
