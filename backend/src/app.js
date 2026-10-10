@@ -5,6 +5,7 @@ const sequelize = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const cursoRoutes = require("./routes/cursoRoutes");
 const cursoAdminRoutes = require("./routes/cursoAdminRoutes");
+const inscripcionRoutes = require("./routes/inscripcionRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/cursos", cursoRoutes);
 app.use("/api/cursos", cursoAdminRoutes);
+app.use("/api", inscripcionRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hola, el servidor está funcionando");
