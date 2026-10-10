@@ -50,4 +50,24 @@ const inscribirse = async (req, res, next) => {
   }
 };
 
-module.exports = { inscribirse };
+const misInscripciones = async (req, res, next) => {
+  try {
+    const inscripciones = await Inscripcion.findAll({
+      where: { usuario_id: req.usuario.id },
+      include: [{ model: Curso, as: 'curso' }],
+      order: [['fecha_inscripcion', 'DESC']],
+    });
+
+    const resultado = inscripciones.map((i) => ({
+      curso: i.curso,
+      fecha_inscripcion: i.fecha_inscripcion,
+      estado: i.estado,
+    }));
+
+    return res.json(resultado);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { inscribirse , misInscripciones };
