@@ -1,0 +1,51 @@
+function doPost(e) {
+  try {
+     1. Obtener la API Key de las Propiedades del Script (el env de Google Apps Script)
+    const scriptProperties = PropertiesService.getScriptProperties();
+    const SECRET_API_KEY = scriptProperties.getProperty(SECRET_API_KEY);
+    
+     2. Parsear los datos que llegan desde el frontend
+    const data = JSON.parse(e.postData.contents);
+    
+     3. Validar seguridad
+    if (!data.key  data.key !== SECRET_API_KEY) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ status error, message Unauthorized Invalid API Key }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    if (!sheet) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ status error, message Sheet 'Logs' not found }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+     4. Calcular el ID automático (número de fila siguiente o contador)
+    const lastRow = sheet.getLastRow();
+    const eventId = lastRow === 0  1  lastRow;  Si la hoja está vacía arranca en 1, sino suma la fila
+    
+     5. Preparar los datos a insertar
+    const timestamp = new Date();
+    const userId = data.user_id  guest_unknown;
+    const eventName = data.event_name  unknown_event;
+    const errorDetail = data.error_detail  ;
+    
+     6. Escribir la fila en la solapa Logs
+    sheet.appendRow([eventId, userId, eventName, errorDetail, timestamp]);
+    
+     7. Retornar éxito al frontend
+    return ContentService
+        .createTextOutput(JSON.stringify({ status success, event_id eventId }))
+        .setMimeType(ContentService.MimeType.JSON);
+        
+  } catch (error) {
+    return ContentService
+        .createTextOutput(JSON.stringify({ status error, message error.toString() }))
+        .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+ Opcional Para verificar que la Web App responde desde el navegador
+function doGet() {
+  return ContentService.createTextOutput(EdTech Analytics API is running correctly.);
+}
