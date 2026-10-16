@@ -50,7 +50,7 @@ export const Courses = () => {
                         </p>
                     </div>
 
-                    <div className="self-end relative bg-primary h-[504px] w-[427px] rounded-tl-[49%] rounded-tr-[49%]">
+                    <div className="self-end relative bg-primary h-[504px] w-[427px] rounded-tl-[213.81px] rounded-tr-[213.81px]">
                         <img
                             src={hero}
                             alt="Descripción de la imagen"
