@@ -2,7 +2,11 @@
 
 > Versión revisada y acordada entre Backend (Brisa + Leo).
 
-## Formato de error de validación (estándar para todos los endpoints)
+## Reglas generales
+
+**Rutas protegidas:** devuelven `401` con `{ error }` si falta el token o es inválido o expirado, y `403` con `{ error }` si el rol no alcanza. El token se envía en el header `Authorization: Bearer <token>`.
+
+### Formato de error de validación (estándar para todos los endpoints)
 
 Basado en RFC 7807, usado cuando falla la validación de datos de entrada (400):
 
@@ -73,6 +77,7 @@ Headers: Authorization: Bearer <token>
 Body: { titulo, descripcion, cupo_maximo }
 Response 201: { id, titulo, descripcion, cupo_maximo, activo }
 Response 400: (ver formato de error de validación)
+Response 401: { error: "..." }
 Response 403: { error: "No tenés permisos para esta acción" }
 ```
 
@@ -80,9 +85,12 @@ Response 403: { error: "No tenés permisos para esta acción" }
 ```
 PUT /api/cursos/:id
 Headers: Authorization: Bearer <token>
-Body: { titulo, descripcion, cupo_maximo, activo }
+Body: { titulo, descripcion, cupo_maximo, activo }  (todos opcionales)
 Response 200: { id, titulo, descripcion, cupo_maximo, activo }
 Response 400: (ver formato de error de validación)
+Response 401: { error: "..." }
+Response 403: { error: "No tenés permisos para esta acción" }
+Response 404: { error: "Curso no encontrado" }
 ```
 
 ### Eliminar curso (admin, soft delete)
@@ -90,6 +98,9 @@ Response 400: (ver formato de error de validación)
 DELETE /api/cursos/:id
 Headers: Authorization: Bearer <token>
 Response 200: { message: "Curso desactivado" }
+Response 401: { error: "..." }
+Response 403: { error: "No tenés permisos para esta acción" }
+Response 404: { error: "Curso no encontrado" }
 ```
 
 ### Ver inscriptos de un curso (admin)
@@ -97,6 +108,7 @@ Response 200: { message: "Curso desactivado" }
 GET /api/cursos/:id/inscriptos
 Headers: Authorization: Bearer <token>
 Response 200: [ { usuario: { id, nombre, email }, fecha_inscripcion, estado } ]
+Response 401: { error: "..." }
 Response 403: { error: "No tenés permisos para esta acción" }
 Response 404: { error: "Curso no encontrado" }
 ```
@@ -108,6 +120,7 @@ Response 404: { error: "Curso no encontrado" }
 GET /api/cursos/:id/clases
 Headers: Authorization: Bearer <token>
 Response 200: [ { id, titulo, contenido, orden } ]
+Response 401: { error: "..." }
 Response 403: { error: "No estás inscripto en este curso" }
 ```
 
@@ -118,7 +131,10 @@ Response 403: { error: "No estás inscripto en este curso" }
 POST /api/cursos/:id/inscripcion
 Headers: Authorization: Bearer <token>
 Response 201: { id, usuario_id, curso_id, fecha_inscripcion, estado }
+Response 401: { error: "..." }
+Response 404: { error: "Curso no encontrado" }  (no existe o está desactivado)
 Response 409: { error: "Ya estás inscripto en este curso" }
+Response 409: { error: "El curso no tiene cupos disponibles" }
 ```
 
 ### Ver mis inscripciones (panel del alumno)
@@ -126,6 +142,7 @@ Response 409: { error: "Ya estás inscripto en este curso" }
 GET /api/mis-inscripciones
 Headers: Authorization: Bearer <token>
 Response 200: [ { curso: {...}, fecha_inscripcion, estado } ]
+Response 401: { error: "..." }
 ```
 
 ---
@@ -142,10 +159,11 @@ Response 200: [ { curso: {...}, fecha_inscripcion, estado } ]
 
 ---
 
-## Definiciones cerradas (25/09/2026)
+## Definiciones cerradas
 
 - ✅ Códigos de error consistentes (400, 401, 403, 404, 409) confirmados para todos los endpoints.
 - ✅ Paginación agregada a `GET /api/cursos`.
 - ✅ Nuevo endpoint `GET /api/cursos/:id/inscriptos` para que el admin vea la lista de inscriptos.
 - ✅ Formato de error de validación estandarizado (RFC 7807 simplificado), aplicado a todos los endpoints con `Body`.
 - ✅ Valores confirmados para `rol` (alumno/admin) y `estado` de inscripciones (activo/inactivo).
+- ✅ Inscripción: no permite duplicados ni superar el cupo máximo del curso; una inscripción en estado `inactivo` se reactiva al volver a inscribirse.
