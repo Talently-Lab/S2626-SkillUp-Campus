@@ -1,9 +1,24 @@
 const Curso = require('../models/Curso');
 
+const CAMPOS = [
+  'titulo',
+  'descripcion',
+  'cupo_maximo',
+  'area_aprendizaje',
+  'nivel',
+  'modalidad',
+  'duracion',
+  'imagen_url',
+];
+
 const crearCurso = async (req, res, next) => {
   try {
-    const { titulo, descripcion, cupo_maximo } = req.body;
-    const curso = await Curso.create({ titulo, descripcion, cupo_maximo });
+    const datos = {};
+    CAMPOS.forEach((c) => {
+      if (req.body[c] !== undefined) datos[c] = req.body[c];
+    });
+
+    const curso = await Curso.create(datos);
     return res.status(201).json(curso);
   } catch (err) {
     next(err);
@@ -19,9 +34,8 @@ const editarCurso = async (req, res, next) => {
       throw error;
     }
 
-    const campos = ['titulo', 'descripcion', 'cupo_maximo', 'activo'];
     const cambios = {};
-    campos.forEach((c) => {
+    [...CAMPOS, 'activo'].forEach((c) => {
       if (req.body[c] !== undefined) cambios[c] = req.body[c];
     });
 
