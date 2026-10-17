@@ -17,7 +17,7 @@ export const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const location = useLocation();
-    const [success] = location.state?.registered ? "¡Listo! Ya podés iniciar sesión." : "";
+    const success = location.state?.registered ? "¡Listo! Ya podés iniciar sesión." : "";
 
     const emailStatus = getFieldStatus(email, validateEmail);
     const passwordStatus = getFieldStatus(password, validatePassword);
