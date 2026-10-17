@@ -1,5 +1,6 @@
-import { ChevronDown, Globe } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import Globe from "../../assets/Globe.svg"
+import ChevronDown from "../../assets/ChevronDown.svg"
 
 const LANGUAGES = [
     { code: "en", label: "English" },
@@ -31,13 +32,10 @@ export function LanguageSelector({ value = "en", onChange }) {
                 aria-label="Change language"
                 aria-haspopup="listbox"
                 aria-expanded={open}
-                className="flex w-[43.86px] h-[25.67px] items-center gap-1 text-[#FFEAD1] hover:text-primary transition-colors cursor-pointer"
+                className="flex w-[43.86px] h-[25.67px] items-center gap-2 text-[#FFEAD1] hover:text-primary transition-colors cursor-pointer"
             >
-                <Globe className="w-[18px] h-[18px]" />
-                <ChevronDown
-                    className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
-                    strokeWidth={2}
-                />
+                <img src={Globe} alt="" width={25.67} height={25.67} />
+                <img src={ChevronDown} alt="" width={10.5} height={4} className={`transition-transform ${open ? "rotate-180" : ""}`}/>
             </button>
 
             {open && (

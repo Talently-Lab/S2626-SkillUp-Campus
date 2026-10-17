@@ -1,9 +1,10 @@
-import { Mail, ShoppingCart } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import isologoflex from "../assets/isologoflex.svg";
 import isologocol from "../assets/isologocol.svg";
 import { LanguageSelector } from "../components/common/LanguageSelector";
 import { useState } from "react";
+import Cart from "../assets/Cart.svg"
+import email from  "../assets/email.svg"
 
 export const PublicLayout = () => {
     const [lang, setLang] = useState("en");
@@ -13,13 +14,7 @@ export const PublicLayout = () => {
             <header className="bg-[#1E0523]">
                 <nav className="max-w-[1300px]  mx-auto flex flex-wrap font-secondary md:flex-nowrap items-center px-4 sm:px-6 py-3 sm:py-4 gap-x-6 gap-y-3">
                     <Link to="/" className="font-primary font-bold text-lg sm:text-[25.64px] ml-6 text-primary tracking-tight">
-                        <img
-                            src={isologoflex}
-                            alt="SkillUp — Inicio"
-                            className="w-[114.56px] h-[33px]"
-                            width={115}
-                            height={33}
-                        />
+                        <img src={isologoflex} alt="SkillUp — Inicio" className="w-[114.56px] h-[33px]" width={115} height={33}/>
                     </Link>
                     <div className="flex items-center ml-auto gap-[22px]">
                         <ul className=" flex items-center w-full md:w-auto gap-[60px] md:ml-16 text-sm font-medium">
@@ -28,7 +23,9 @@ export const PublicLayout = () => {
                             <li><Link to="/contact" className="text-[12.13px] text-[#FFEAD1] hover:text-primary transition-colors">Contact</Link></li>
                         </ul>
                         <div className="flex items-center text-[12.13px] gap-[22px]">
-                            <Link to="/cart" className="text-[12.13px] text-[#FFEAD1] hover:text-primary transition-colors"><ShoppingCart /></Link>
+                            <Link to="/cart" className="text-[12.13px] text-[#FFEAD1] hover:text-primary transition-colors">
+                                <img src={Cart} alt="" width={24.07} height={22.46}/>
+                            </Link>
                             <Link
                                 to="/login"
                                 className="bg-primary text-[#1E0523] px-3 sm:px-[38px] py-[10.5px] rounded-4xl hover:text-neutral transition-opacity"
@@ -147,8 +144,8 @@ export const PublicLayout = () => {
                                     <label htmlFor="newsletter-email" className="sr-only">
                                         Email address to receive updates
                                     </label>
-                                    <Mail
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-dark pointer-events-none"
+                                    <img src={email}
+                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-[17.72px] h-[17.72px] text-dark pointer-events-none"
                                         aria-hidden="true"
                                     />
                                     <input
