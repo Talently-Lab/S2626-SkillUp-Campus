@@ -8,6 +8,7 @@ const obtenerCursos = async (req, res, next) => {
 
         const { rows: cursos, count: total } = await Curso.findAndCountAll({
             where: { activo: true },
+            order: [['id','ASC']],
             limit,
             offset
         });
@@ -31,9 +32,12 @@ const obtenerCursos = async (req, res, next) => {
 const obtenerCursoPorId = async (req, res, next) => {
     try{
         const { id } = req.params;
-        const curso = await Curso.findByPk(id, {
-            where: { activo: true }
-        });
+        const idNum = Number(id);
+
+        // Si el id de la URL no se puede interpretar como número, devolvemos 404
+        const curso = Number.isNaN(idNum)
+            ? null 
+            : await Curso.findOne({ where: { id: idNum, activo: true } });
 
         if(!curso) {
             const error = new Error('Curso no encontrado');
