@@ -1,21 +1,20 @@
-import { Globe, Mail, ShoppingCart } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import isologoflex from "../assets/isologoflex.svg";
 import isologocol from "../assets/isologocol.svg";
+import { LanguageSelector } from "../components/common/LanguageSelector";
+import { useState } from "react";
+import Cart from "../assets/Cart.svg"
+import email from  "../assets/email.svg"
 
 export const PublicLayout = () => {
+    const [lang, setLang] = useState("en");
+
     return (
         <div className="min-h-screen grid grid-rows-[auto_1fr_auto] bg-white text-dark ">
             <header className="bg-[#1E0523]">
                 <nav className="max-w-[1300px]  mx-auto flex flex-wrap font-secondary md:flex-nowrap items-center px-4 sm:px-6 py-3 sm:py-4 gap-x-6 gap-y-3">
                     <Link to="/" className="font-primary font-bold text-lg sm:text-[25.64px] ml-6 text-primary tracking-tight">
-                        <img
-                            src={isologoflex}
-                            alt="SkillUp — Inicio"
-                            className="w-[114.56px] h-[33px]"
-                            width={115}
-                            height={33}
-                        />
+                        <img src={isologoflex} alt="SkillUp — Inicio" className="w-[114.56px] h-[33px]" width={115} height={33}/>
                     </Link>
                     <div className="flex items-center ml-auto gap-[22px]">
                         <ul className=" flex items-center w-full md:w-auto gap-[60px] md:ml-16 text-sm font-medium">
@@ -24,7 +23,9 @@ export const PublicLayout = () => {
                             <li><Link to="/contact" className="text-[12.13px] text-[#FFEAD1] hover:text-primary transition-colors">Contact</Link></li>
                         </ul>
                         <div className="flex items-center text-[12.13px] gap-[22px]">
-                            <Link to="/cart" className="text-[12.13px] text-[#FFEAD1] hover:text-primary transition-colors"><ShoppingCart /></Link>
+                            <Link to="/cart" className="text-[12.13px] text-[#FFEAD1] hover:text-primary transition-colors">
+                                <img src={Cart} alt="" width={24.07} height={22.46}/>
+                            </Link>
                             <Link
                                 to="/login"
                                 className="bg-primary text-[#1E0523] px-3 sm:px-[38px] py-[10.5px] rounded-4xl hover:text-neutral transition-opacity"
@@ -32,24 +33,14 @@ export const PublicLayout = () => {
                                 <span className="text-[12.13px] font-bold font-secondary">Sign In</span>
                             </Link>
                         </div>
-                        {/*                         <div className="flex items-center gap-[22px] text-sm font-medium">
-                            <Link to="/login" className=" text-[#FFEAD1] hover:text-accent transition-colors">
-                                <span className="text-[12.13px] font-bold">Login</span></Link>
-                            <Link to="/signup"
-                                className="bg-accent text-[#1E0523] px-3 sm:px-[38px] py-[10.5px] rounded-4xl hover:text-neutral transition-opacity">
-                                <span className="text-[12.13px] font-bold">Sign Up</span>
-                            </Link>
-                        </div> */}
-                        <ul className="">
-                            <li><Link to="/lenguage" className="text-[#FFEAD1] hover:text-primary transition-colors"><Globe /></Link></li>
-                        </ul>
+                        <LanguageSelector value={lang} onChange={setLang} />
                     </div>
                 </nav>
             </header>
             <main className="w-full">
                 <Outlet />
             </main>
-            <footer className="mt-12 w-full bg-[#1E0523]">
+            <footer className="mt-12 py-12 w-full bg-[#1E0523]">
                 <div className="max-w-[1300px] h-[430px] text-neutral mx-auto px-4 sm:px-6 py-6 flex flex-col justify-between gap-3 text-sm text-center md:text-left">
                     <div className="flex items-center justify-between py-10 h-[436px] w-full gap-[64px]  items-start">
                         <div className="flex flex-col gap-[23px] w-[156px]">
@@ -153,15 +144,15 @@ export const PublicLayout = () => {
                                     <label htmlFor="newsletter-email" className="sr-only">
                                         Email address to receive updates
                                     </label>
-                                    <Mail
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-dark pointer-events-none"
+                                    <img src={email}
+                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-[17.72px] h-[17.72px] text-dark pointer-events-none"
                                         aria-hidden="true"
                                     />
                                     <input
                                         id="newsletter-email"
                                         type="email"
                                         name="email"
-                                        placeholder="Tu email"
+                                        placeholder="your email address"
                                         autoComplete="email"
                                         className="w-full h-full pl-10 pr-3 rounded-full bg-neutral border border-[#3A1A40] text-[14px] font-secondary text-black placeholder:text-[#9A9CA0] placeholder:font-normal outline-none"
                                     />
@@ -188,19 +179,8 @@ export const PublicLayout = () => {
                             </p>
                         </div>
 
-                        <nav aria-label="Selector de idioma">
-                            <ul className="gap-[22px] ">
-                                <li>
-                                    <Link
-                                        to="/lenguage"
-                                        className=""
-                                        aria-label="Cambiar idioma"
-                                    >
-                                        <Globe aria-hidden="true" className="text-[#FFEAD1] hover:text-primary transition-colors" />
-                                    </Link>
-                                </li>
-                            </ul>
-                        </nav>
+                        <LanguageSelector value={lang} onChange={setLang} />
+
                     </div>
                 </div>
             </footer>

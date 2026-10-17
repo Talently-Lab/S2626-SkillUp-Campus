@@ -29,12 +29,12 @@ export function Select({ label, value, onChange, options }) {
                     ref={buttonRef}
                     type="button"
                     onClick={() => setOpen((o) => !o)}
-                    className="w-full h-12.5 px-3 py-2 pr-10 text-[16px] text-left border-[1px] border-neutral rounded-[4px] focus:outline-none cursor-pointer appearance-none bg-white"
+                    className="w-full h-12.5 px-5 py-2 pr-10 text-[16px] text-left border-[1px] border-neutral rounded-[4px] focus:outline-none cursor-pointer appearance-none bg-white"
                 >
                     {value || 'All'}
                 </button>
                 <ChevronDown
-                    className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-[23px] h-[24px] text-dark transition-transform ${open ? "rotate-180" : ""}`}
+                    className={`pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 w-[23px] h-[24px] text-dark transition-transform ${open ? "rotate-180" : ""}`}
                     strokeWidth={2}
                 />
 
@@ -44,7 +44,7 @@ export function Select({ label, value, onChange, options }) {
                     >
                         <li
                             onClick={() => handleSelect("")}
-                            className="px-3 py-2 text-[16px] cursor-pointer hover:bg-[#FF9617] hover:text-neutral"
+                            className="px-5 py-2 text-[16px] cursor-pointer hover:bg-[#FF9617] hover:text-neutral"
                         >
                             All
                         </li>
@@ -52,7 +52,7 @@ export function Select({ label, value, onChange, options }) {
                             <li
                                 key={opt}
                                 onClick={() => handleSelect(opt)}
-                                className="px-3 py-2 text-[16px] cursor-pointer hover:bg-[#FF9617] hover:text-neutral"
+                                className="px-5 py-2 text-[16px] cursor-pointer hover:bg-[#FF9617] hover:text-neutral"
                             >
                                 {opt}
                             </li>
