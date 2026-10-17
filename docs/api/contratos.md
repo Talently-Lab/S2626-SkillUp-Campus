@@ -113,6 +113,15 @@ Response 403: { error: "No tenés permisos para esta acción" }
 Response 404: { error: "Curso no encontrado" }
 ```
 
+### Listar usuarios (admin)
+```
+GET /api/admin/users
+Headers: Authorization: Bearer <token>
+Response 200: [ { id, nombre, email, rol } ]
+Response 401: { error: "..." }
+Response 403: { error: "No tenés permisos para esta acción" }
+```
+
 ## Clases
 
 ### Ver clases de un curso (requiere inscripción activa)
