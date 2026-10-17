@@ -12,6 +12,7 @@ import { AdminCourses } from "../pages/admin/AdminCourses";
 import { AdminUsers } from "../pages/admin/AdminUsers";
 import { NotFound } from "../pages/NotFound";
 import { UserLayout } from "../layouts/UserLayout";
+import { ProtectedRoute } from "../components/common/ProtectedRoute";
 
 export const AppRouter = () => {
     return (
@@ -28,8 +29,10 @@ export const AppRouter = () => {
                     <Route path="/signup" element={<SignUp />} />
                 </Route>
 
-                <Route element={<UserLayout />}>
-                    <Route path="/dashboard" element={<UserDashboard />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route element={<UserLayout />}>
+                        <Route path="/dashboard" element={<UserDashboard />} />
+                    </Route>
                 </Route>
 
                 <Route element={<AdminLayout />}>
