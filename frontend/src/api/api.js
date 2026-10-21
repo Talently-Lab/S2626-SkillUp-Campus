@@ -40,6 +40,12 @@ async function request(endpoint, { method = "GET", body, token } = {}) {
     const data = await res.json().catch(() => null);
 
     if (!res.ok) {
+        if (res.status === 401 && token) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("usuario");
+            window.location.href = "/login";
+        }
+
         throw new ApiError({
             status: res.status,
             code: data?.code,

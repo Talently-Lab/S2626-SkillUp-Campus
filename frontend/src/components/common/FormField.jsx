@@ -4,7 +4,7 @@ import EyeSlash from "../../assets/EyeSlash.svg";
 
 const BORDER = {
     default: "border-info",
-    success: "border-succes",
+    success: "border-success",
     warning: "border-warning",
     error: "border-error",
 };
@@ -21,7 +21,7 @@ export function FormField({
     isPassword = false,
     status = "default",
     helperText,
-    required = true,
+    required = false,
     minLength,
     className = "",
 }) {
@@ -53,6 +53,8 @@ export function FormField({
                     required={required}
                     minLength={minLength}
                     autoComplete={autoComplete}
+                    aria-invalid={status === "error"}
+                    aria-describedby={helperText ? `${id}-helper` : undefined}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     placeholder={placeholder}
@@ -80,7 +82,7 @@ export function FormField({
             </div>
 
             {helperText && (
-                <p className="mt-1 text-[12px] font-secondary text-[#4F4F4F] leading-snug">
+                <p id={`${id}-helper`} className="mt-1 text-[12px] font-secondary text-[#4F4F4F] leading-snug">
                     {helperText}
                 </p>
             )}

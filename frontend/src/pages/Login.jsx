@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getFriendlyMessage } from "../api/errorMessages";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FRIENDLY_MESSAGES, getFriendlyMessage } from "../api/errorMessages";
 import isologoflex from "../assets/isologoflex.svg";
 import Email from "../assets/Email.svg";
 import Lock from "../assets/Lock.svg";
@@ -16,6 +16,8 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const location = useLocation();
+    const success = location.state?.registered ? "¡Listo! Ya podés iniciar sesión." : "";
 
     const emailStatus = getFieldStatus(email, validateEmail);
     const passwordStatus = getFieldStatus(password, validatePassword);
@@ -23,6 +25,12 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+
+        if (!email.trim() || !password.trim()) {
+            setError(FRIENDLY_MESSAGES.REQUIRED_FIELD);
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -31,7 +39,7 @@ export const Login = () => {
             localStorage.setItem("token", token);
             localStorage.setItem("usuario", JSON.stringify(usuario));
 
-            navigate("/user-dashboard");
+            navigate("/dashboard");
         } catch (err) {
             setError(getFriendlyMessage(err));
         } finally {
@@ -65,7 +73,7 @@ export const Login = () => {
                             </p>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="mt-[35px] w-[320px]">
+                        <form onSubmit={handleSubmit} className="mt-[35px] w-[320px]" noValidate>
                             <FormField
                                 id="email"
                                 label="Email"
@@ -111,6 +119,15 @@ export const Login = () => {
                                     Did you forget your password?
                                 </Link>
                             </div>
+
+                            {success && (
+                                <div
+                                    role="status"
+                                    className="mt-[20px] w-[290px] text-success text-[14px] font-secondary leading-snug"
+                                >
+                                    {success}
+                                </div>
+                            )}
 
                             {error && (
                                 <div

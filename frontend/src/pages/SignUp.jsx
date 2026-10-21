@@ -6,7 +6,7 @@ import Lock from "../assets/Lock.svg"
 import { Check, LoaderCircle } from "lucide-react";
 import LogoSkillUp from "../assets/Logo_Skillup.svg";
 import Perfil from "../assets/Perfil.svg";
-import { getFriendlyMessage } from "../api/errorMessages";
+import { FRIENDLY_MESSAGES, getFriendlyMessage } from "../api/errorMessages";
 import { register } from "../api/api";
 import { FormField } from "../components/common/FormField";
 import { validateName, validateEmail, validatePassword, getFieldStatus } from "../utils/validators";
@@ -34,8 +34,13 @@ export const SignUp = () => {
         e.preventDefault();
         setError("");
 
+        if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+            setError(FRIENDLY_MESSAGES.REQUIRED_FIELD);
+            return;
+        }
+
         if (password !== confirmPassword) {
-            setError("Las contraseñas no coinciden. Volvé a intentarlo.");
+            setError(FRIENDLY_MESSAGES.PASSWORD_MISMATCH);
             return;
         }
 
@@ -93,7 +98,7 @@ export const SignUp = () => {
                             </p>
                         </div>
 
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} noValidate>
                             <FormField
                                 id="username"
                                 label="Name"
@@ -116,6 +121,7 @@ export const SignUp = () => {
                                 autoComplete="email"
                                 icon={<img src={Email} alt="" className="h-6 w-6" />}
                                 status={emailStatus}
+                                helperText={emailStatus === "error" ? "Ingresá un email válido." : undefined}
                             />
 
                             <FormField
@@ -126,7 +132,7 @@ export const SignUp = () => {
                                 onChange={setPassword}
                                 placeholder="Enter your password"
                                 autoComplete="new-password"
-                                minLength={8}
+                                minLength={8} //esto en los form no hace nada porque ya valida en validators.js
                                 isPassword
                                 icon={<img src={Lock} alt="" className="h-6 w-6" />}
                                 status={passwordStatus}
