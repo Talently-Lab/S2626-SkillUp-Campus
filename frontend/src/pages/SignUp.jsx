@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import isologoflex from "../assets/isologoflex.svg";
 import Email from "../assets/Email.svg";
@@ -10,6 +10,7 @@ import { FRIENDLY_MESSAGES, getFriendlyMessage } from "../api/errorMessages";
 import { register } from "../api/api";
 import { FormField } from "../components/common/FormField";
 import { validateName, validateEmail, validatePassword, getFieldStatus } from "../utils/validators";
+import { trackViewRegisterForm, trackClickRegister, trackRegisterSuccess, trackRegisterError, extractErrorDetail } from "../api/analytics";
 
 export const SignUp = () => {
     const navigate = useNavigate();
@@ -30,33 +31,44 @@ export const SignUp = () => {
         (v) => (v === password ? "valid" : "invalid")
     );
 
+    useEffect(() => {
+        trackViewRegisterForm();
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
+        trackClickRegister();
+
         if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
             setError(FRIENDLY_MESSAGES.REQUIRED_FIELD);
+            trackRegisterError("form_incomplete");
             return;
         }
 
         if (password !== confirmPassword) {
             setError(FRIENDLY_MESSAGES.PASSWORD_MISMATCH);
+            trackRegisterError("password_mismatch");
             return;
         }
 
         if (!acceptedTerms) {
             setError("Tenés que aceptar los términos y condiciones para continuar.");
+            trackRegisterError("terms_not_accepted");
             return;
         }
 
         setLoading(true);
 
         try {
-            await register({ nombre: username, email, password });
+            const data = await register({ nombre: username, email, password });
 
+            trackRegisterSuccess(data?.id);
             navigate("/login", { state: { registered: true } });
         } catch (err) {
             setError(getFriendlyMessage(err));
+            trackRegisterError(extractErrorDetail(err));
         } finally {
             setLoading(false);
         }
