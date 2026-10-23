@@ -1,5 +1,6 @@
 const Inscripcion = require('../models/Inscripcion');
 const Curso = require('../models/Curso');
+const Usuario = require('../models/Usuario');
 
 const inscribirse = async (req, res, next) => {
   try {
@@ -70,4 +71,37 @@ const misInscripciones = async (req, res, next) => {
   }
 };
 
-module.exports = { inscribirse , misInscripciones };
+const inscriptosDeCurso = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const curso = Number.isNaN(id) ? null : await Curso.findByPk(id);
+    if (!curso) {
+      const error = new Error('Curso no encontrado');
+      error.status = 404;
+      throw error;
+    }
+
+    const inscripciones = await Inscripcion.findAll({
+      where: { curso_id: id },
+      include: [{
+        model: Usuario,
+        as: 'usuario',
+        attributes: ['id', 'nombre', 'email'],
+      }],
+      order: [['fecha_inscripcion', 'DESC']],
+    });
+
+    const resultado = inscripciones.map((i) => ({
+      usuario: i.usuario,
+      fecha_inscripcion: i.fecha_inscripcion,
+      estado: i.estado,
+    }));
+
+    return res.json(resultado);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { inscribirse, misInscripciones, inscriptosDeCurso };
