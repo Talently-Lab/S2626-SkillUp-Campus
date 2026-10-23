@@ -29,15 +29,35 @@ const Curso = sequelize.define('Curso', {
                 msg: 'El cupo máximo debe ser al menos 1.'
             }
         }
-    }, 
+    },
     activo: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true
+    },
+    area_aprendizaje: {
+        type: DataTypes.STRING(50),
+        allowNull: true
+    },
+    nivel: {
+        type: DataTypes.STRING(20),
+        allowNull: true
+    },
+    modalidad: {
+        type: DataTypes.STRING(20),
+        allowNull: true
+    },
+    duracion: {
+        type: DataTypes.STRING(30),
+        allowNull: true
+    },
+    imagen_url: {
+        type: DataTypes.STRING(500),
+        allowNull: true
     }
-    }, {
-        tableName: 'cursos',
-        timestamps: false
+}, {
+    tableName: 'cursos',
+    timestamps: false
 });
 
 module.exports = Curso;
