@@ -2,8 +2,7 @@ const Curso = require('../models/Curso');
 
 const obtenerCursos = async (req, res, next) => {
     try{
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const { page, limit } = req.validatedPagination;
         const offset = (page - 1) * limit;
 
         const { rows: cursos, count: total } = await Curso.findAndCountAll({
