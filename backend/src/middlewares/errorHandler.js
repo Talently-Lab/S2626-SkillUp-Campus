@@ -1,6 +1,31 @@
 function errorHandler(err, req, res, next) {
   console.error(err);
 
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({
+      status: 400,
+      code: 'INVALID_JSON',
+      message: 'El cuerpo de la solicitud no contiene JSON válido.',
+    });
+  }
+
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({
+      status: 413,
+      code: 'PAYLOAD_TOO_LARGE',
+      message: 'El cuerpo de la solicitud supera el tamaño permitido.',
+    });
+  }
+
+  if (err.status === 400 && err.errors) {
+    return res.status(400).json({
+      status: 400,
+      code: err.code || 'VALIDATION_ERROR',
+      message: err.message,
+      errors: err.errors,
+    });
+  }
+
   // Duplicado (constraint unique de Sequelize/Postgres)
   if (err.code === '23505' || err.name === 'SequelizeUniqueConstraintError') {
     const esEmail = err.fields && Object.keys(err.fields).includes('email');
