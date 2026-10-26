@@ -74,3 +74,37 @@ export function extractErrorDetail(err) {
 
     return "unknown_error";
 }
+
+//tracker:
+export const pushToDataLayer = (payload) => {
+    if (typeof window === 'undefined') return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(payload);
+};
+
+//eventos:
+export const extractCourseTelemetryData = (course) => ({
+    id: course.id,
+    titulo: course.titulo,
+    area_aprendizaje: course.area_aprendizaje,
+    nivel: course.nivel,
+    modalidad: course.modalidad,
+    duracion: course.duracion,
+});
+
+export const trackViewCourseList = (cantidadCursos, areaFiltrada = 'todas') => ({
+    event: 'view_course_list',
+    cantidad_cursos: cantidadCursos,
+    area_filtrada: areaFiltrada,
+});
+
+export const trackClickCourseDetail = (course, index) => ({
+    event: 'click_course_detail',
+    ...extractCourseTelemetryData(course),
+    posicion: index + 1,
+});
+
+export const trackAttemptEnrollment = (course) => ({
+    event: 'attempt_enrollment',
+    ...extractCourseTelemetryData(course),
+});

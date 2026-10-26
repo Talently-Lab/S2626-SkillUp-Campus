@@ -39,7 +39,7 @@ export const Login = () => {
             localStorage.setItem("token", token);
             localStorage.setItem("usuario", JSON.stringify(usuario));
 
-            navigate("/dashboard");
+            navigate(location.state?.from ?? "/dashboard");
         } catch (err) {
             setError(getFriendlyMessage(err));
         } finally {
@@ -160,7 +160,7 @@ export const Login = () => {
                         <p className="text-[16px] font-medium font-secondary">
                             Don't have an account yet?
                         </p>
-                        <Link to="/signup" className="text-[#9417B1] text-[16px] font-medium font-secondary underline underline-offset-2 block mt-1">
+                        <Link to="/signup" state={{ from: location.state?.from }} className="text-[#9417B1] text-[16px] font-medium font-secondary underline underline-offset-2 block mt-1">
                             Create Your Account
                         </Link>
                     </div>

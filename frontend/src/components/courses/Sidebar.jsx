@@ -1,9 +1,9 @@
-import { LEARNING_AREAS, LEVELS, FORMATS, COSTS } from "../../data/filters";
+import { LEARNING_AREAS, LEVELS, FORMATS } from "../../data/filters";
 import { Search, X } from "lucide-react";
 import { Select } from "../common/Select";
 
 
-export const Sidebar = ({ search, onSearchChange, filters, onFilterChange, onReset }) => {
+export const Sidebar = ({ search, onSearchChange, filters, onFilterChange, onReset, durationOptions = [] }) => {
 
     return (
         <aside className="shrink-0 p-4 flex flex-col gap-3 sticky top-10">
@@ -45,7 +45,7 @@ export const Sidebar = ({ search, onSearchChange, filters, onFilterChange, onRes
                     <Select label={"Category"} value={filters.learningArea} onChange={(v) => onFilterChange("learningArea", v)} options={LEARNING_AREAS} />
                     <Select label={"Level"} value={filters.level} onChange={(v) => onFilterChange("level", v)} options={LEVELS} />
                     <Select label={"Mode"} value={filters.format} onChange={(v) => onFilterChange("format", v)} options={FORMATS} />
-                    <Select label={"Cost"} value={filters.cost} onChange={(v) => onFilterChange("cost", v)} options={COSTS} />
+                    <Select label={"Duration"} value={filters.duration} onChange={(v) => onFilterChange("duration", v)} options={durationOptions} />
                 </div>
             </div>
 
