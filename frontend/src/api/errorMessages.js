@@ -26,6 +26,13 @@ export const FRIENDLY_MESSAGES = {
     //este en teoria maneja el response 401 por lo que aplica para cualquier credencial incorrecta (email/password)
 /*     VALIDATION_ERROR:
         "Revisá los datos ingresados e intentá de nuevo.", */
+    //para los course detail (esto no esta escrito por la copywriter)
+    COURSE_NOT_FOUND:
+        "No encontramos este curso. Puede haber sido dado de baja.",
+    ALREADY_ENROLLED:
+        "Ya estás inscripto en este curso. Podés verlo en tu panel.",
+    NO_SEATS_AVAILABLE:
+        "Este curso no tiene cupos disponibles. Probá con otro.",
 
 };
 
@@ -56,7 +63,23 @@ export function getFriendlyMessage(error, {hasToken = false} = {}) {
         return FRIENDLY_MESSAGES.INVALID_CREDENTIALS;
     }
 
-    if(error.status === 409){
+    if (error.status === 404) {
+        return FRIENDLY_MESSAGES.COURSE_NOT_FOUND;
+    }
+
+/*     if(error.status === 409){
+        return FRIENDLY_MESSAGES.EMAIL_ALREADY_REGISTERED;
+    } */
+
+    if (error.status === 409) {
+        const msg = (error.message || "").toLowerCase();
+
+        if (msg.includes("cupo")) {
+            return FRIENDLY_MESSAGES.NO_SEATS_AVAILABLE;
+        }
+        if (msg.includes("inscripto")) {
+            return FRIENDLY_MESSAGES.ALREADY_ENROLLED;
+        }
         return FRIENDLY_MESSAGES.EMAIL_ALREADY_REGISTERED;
     }
 

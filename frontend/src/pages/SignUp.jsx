@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import isologoflex from "../assets/isologoflex.svg";
 import Email from "../assets/Email.svg";
 import Lock from "../assets/Lock.svg"
@@ -14,7 +14,7 @@ import { trackViewRegisterForm, trackClickRegister, trackRegisterSuccess, trackR
 
 export const SignUp = () => {
     const navigate = useNavigate();
-
+    const location = useLocation();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -65,7 +65,7 @@ export const SignUp = () => {
             const data = await register({ nombre: username, email, password });
 
             trackRegisterSuccess(data?.id);
-            navigate("/login", { state: { registered: true } });
+            navigate("/login", { state: { registered: true, from: location.state?.from } });
         } catch (err) {
             setError(getFriendlyMessage(err));
             trackRegisterError(extractErrorDetail(err));
@@ -225,6 +225,7 @@ export const SignUp = () => {
                         </p>
                         <Link
                             to="/login"
+                            state={{ from: location.state?.from, registered: false }}
                             className="text-[#9417B1] text-[16px] font-medium font-secondary underline underline-offset-2 block"
                         >
                             Log in
