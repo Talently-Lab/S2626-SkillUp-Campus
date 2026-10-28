@@ -142,6 +142,21 @@ Response 403: { error: "No tenés permisos para esta acción" }
 Response 404: { error: "Curso no encontrado" }
 ```
 
+### Resumen del panel administrador
+```
+GET /api/admin/dashboard
+Headers: Authorization: ******
+Response 200: {
+  cursos_activos: 12,
+  usuarios_registrados: 150,
+  inscripciones_historicas: 320
+}
+Response 401: { error: "..." }
+Response 403: { error: "No tenés permisos para esta acción" }
+```
+
+La respuesta contiene únicamente los tres indicadores solicitados. Las inscripciones históricas incluyen todos los registros, independientemente de su estado actual.
+
 ### Listar usuarios (admin)
 ```
 GET /api/admin/users
