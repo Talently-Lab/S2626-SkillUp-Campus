@@ -41,6 +41,7 @@ Body: { nombre, email, password }
 Response 201: { id, nombre, email, rol }
 Response 400: (ver formato de error de validación)
 Response 409: { error: "Email ya registrado" }
+Response 429: { error: "Demasiados intentos. Intentá nuevamente en un minuto." }
 ```
 
 ### Login
@@ -50,6 +51,34 @@ Body: { email, password }
 Response 200: { token, usuario: { id, nombre, rol } }
 Response 400: (ver formato de error de validación)
 Response 401: { error: "Credenciales inválidas" }
+Response 429: { error: "Demasiados intentos. Intentá nuevamente en un minuto." }
+```
+
+### Seguridad de autenticación
+
+Las rutas `POST /api/auth/register` y `POST /api/auth/login` están protegidas por rate limiting por dirección IP. Se permiten hasta 5 solicitudes por minuto por IP. Al exceder el límite, la API responde con estado `429`:
+
+```json
+{ "error": "Demasiados intentos. Intentá nuevamente en un minuto." }
+```
+
+En registro se aplican las siguientes reglas:
+
+- `nombre`: texto obligatorio y no vacío, entre 1 y 255 caracteres.
+- `email`: texto obligatorio, formato de email válido, máximo 254 caracteres.
+- `password`: texto obligatorio, entre 8 y 72 caracteres.
+
+Los campos se normalizan antes de guardar: el nombre se recorta; el email se recorta, convierte a formato normalizado y se almacena en minúsculas. Los errores de autenticación usan siempre el mismo mensaje para evitar confirmar si una cuenta existe: `{ "error": "Credenciales inválidas" }`.
+
+### Errores internos
+
+Los errores no contemplados por el manejo específico responden con estado `500` usando el siguiente formato:
+
+```json
+{
+  "error": "Error interno del servidor",
+  "detalles": "Mensaje de la excepción"
+}
 ```
 
 ## Cursos

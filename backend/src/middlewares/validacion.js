@@ -1,3 +1,5 @@
+const { body, validationResult } = require('express-validator');
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CONTROL_CHARACTERS_REGEX = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/;
 
@@ -155,18 +157,56 @@ const validarPaginacion = (req, res, next) => {
   return next();
 };
 
-const validacionRegistro = validarBody({
-  nombre: { type: 'string', required: true, minLength: 2, maxLength: 255 },
-  email: {
-    type: 'string',
-    required: true,
-    maxLength: 254,
-    normalize: (value) => value.toLowerCase(),
-    pattern: EMAIL_REGEX,
-    patternMessage: 'Debe ser una dirección de email válida.',
+const manejarErroresExpressValidator = (req, res, next) => {
+  const errores = validationResult(req);
+  if (errores.isEmpty()) return next();
+
+  return next(crearErrorValidacion(errores.array().map((error) => ({
+    field: error.path,
+    message: error.msg,
+    code: error.type === 'field' ? 'INVALID_VALUE' : 'INVALID_TYPE',
+  }))));
+};
+
+const validacionRegistro = [
+  body('nombre')
+    .exists().withMessage('Este campo es obligatorio.')
+    .bail()
+    .isString().withMessage('Debe ser texto.')
+    .bail()
+    .trim()
+    .notEmpty().withMessage('Este campo es obligatorio.')
+    .bail()
+    .isLength({ min: 1, max: 255 }).withMessage('Debe tener entre 1 y 255 caracteres.'),
+  body('email')
+    .exists().withMessage('Este campo es obligatorio.')
+    .bail()
+    .isString().withMessage('Debe ser texto.')
+    .bail()
+    .trim()
+    .isEmail().withMessage('Debe ser una dirección de email válida.')
+    .bail()
+    .isLength({ max: 254 }).withMessage('No puede superar 254 caracteres.')
+    .normalizeEmail(),
+  body('password')
+    .exists().withMessage('Este campo es obligatorio.')
+    .bail()
+    .isString().withMessage('Debe ser texto.')
+    .bail()
+    .isLength({ min: 8, max: 72 }).withMessage('Debe tener entre 8 y 72 caracteres.'),
+  manejarErroresExpressValidator,
+  (req, res, next) => {
+    const camposPermitidos = ['nombre', 'email', 'password'];
+    const camposDesconocidos = Object.keys(req.body || {}).filter((field) => !camposPermitidos.includes(field));
+    if (camposDesconocidos.length === 0) return next();
+
+    return next(crearErrorValidacion(camposDesconocidos.map((field) => ({
+      field,
+      message: 'Este campo no está permitido.',
+      code: 'UNKNOWN_FIELD',
+    }))));
   },
-  password: { type: 'string', required: true, trim: false, minLength: 8, maxBytes: 72 },
-});
+];
 
 const validacionLogin = validarBody({
   email: {
