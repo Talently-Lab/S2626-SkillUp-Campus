@@ -69,7 +69,10 @@ function errorHandler(err, req, res, next) {
   }
 
   // Fallback genérico
-  return res.status(500).json({ error: 'Error interno del servidor' });
+  return res.status(500).json({
+    error: 'Error interno del servidor',
+    detalles: err.message,
+  });
 }
 
 module.exports = errorHandler;

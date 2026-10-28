@@ -17,20 +17,24 @@ El objetivo central es desplegar un producto mínimo viable (MVP) estable y func
 
 ## 👥 Equipo de Trabajo e Integrantes
 
-* **Project Manager:** [Marcia Torre]
-* **Diseñador UX/UI:** [Daniela Rosales]
-* **Desarrollador Backend (NodeJs):** [Leonardo Gonzalez]
-* **Desarrollador Backend (NodeJs):** [Brisa Naiara Giavedoni]
-* **Desarrollador Frontend (React):** [Kevin Huayta]
-* **Data Analyst:** [Abril Milagros Palacin]
-* **Especialista de Marketing:** [Jorgelina Riquelme]
-* **Tester QA Manual:** [Mayra Elizabeth Ferreira]
+| Integrante | Rol | Contacto |
+| :--- | :--- | :--- |
+| Manuel Casimiro | Project Manager | manuelgcasimiro@gmail.com |
+| Marcia Torre | Project Manager | marciatorre.pacc@gmail.com |
+| Leonardo Gonzalez | Desarrollador Backend (Node.js) | leogon581@gmail.com |
+| Brisa Naiara Giavedoni | Desarrollador Backend (Node.js) | giavedonibrisa@gmail.com |
+| Kevin Huayta | Desarrollador Frontend (React) | contactohuayta@gmail.com |
+| Daniela Rosales | Diseñadora UX/UI | fanirosales15@gmail.com |
+| Abril Milagros Palacín | Data Analyst | abrilmpalacin@gmail.com |
+| Jorgelina Riquelme | Especialista de Marketing | riquelmejorgelina@gmail.com |
+| Mayra Elizabeth Ferreira | Tester QA Manual | No informado |
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-* **Backend:** Node.js, Express, PostgreSQL
+* **Backend:** Node.js, Express, PostgreSQL, Sequelize, JWT, bcrypt
+* **Validación y seguridad:** express-validator, express-rate-limit
 * **Frontend:** React + Vite, CSS (Tailwind / Vanilla)
 * **QA:** Postman, Google Sheets
 * **Data:** PostgreSQL / SQL, Power BI / Looker Studio, Excel
@@ -106,9 +110,17 @@ Para obtener una copia local del código fuente, ejecuta en tu terminal:
 3. **Ejecución de la Aplicación:** Inicia el servidor de desarrollo web:
    `npm run dev`
 
-   > ℹ️ **Nota de red:** Una vez iniciado, la API REST estará disponible para recibir peticiones HTTP en la dirección `http://localhost:5173`.
+   > ℹ️ **Nota de red:** Una vez iniciado, el frontend estará disponible en `http://localhost:5173`.
 
+## 📚 Documentación adicional
 
+- [Contratos de la API](docs/api/contratos.md): rutas, bodies, respuestas HTTP, validaciones y políticas de seguridad.
+- [Frontend README](frontend/README.md): configuración específica de la aplicación React.
+- `backend/.env.example`: variables necesarias para ejecutar la API.
+
+La API incluye validación de datos, limitación de intentos en registro y login, autenticación con JWT y manejo centralizado de errores.
+
+---
 
 # 🤝 Flujo de Trabajo y Convenciones de Git
 
@@ -139,3 +151,9 @@ Para mantener un historial de cambios ordenado y profesional, el equipo sigue el
 | **fix** | Solución a un error o bug detectado | `git commit -m "fix: corregir ruta de navegacion en login"` |
 | **docs** | Actualización o creación de documentación | `git commit -m "docs: actualizar guia de ejecucion en readme"` |
 | **refactor** | Reestructuración interna del código | `git commit -m "refactor: optimizar conexion a base de datos"` |
+
+---
+
+## 🚀 Estado del Proyecto
+
+SkillUp Campus se encuentra en desarrollo como MVP. Las contribuciones deben realizarse desde ramas temáticas y documentarse mediante commits descriptivos siguiendo las convenciones indicadas en este README.
