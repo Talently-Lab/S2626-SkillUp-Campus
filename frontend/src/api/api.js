@@ -73,3 +73,18 @@ export async function login({ email, password }) {
         body: { email, password },
     });
 }
+
+export async function getCourses({ page = 1, limit = 10 } = {}) {
+    return request(`/cursos?page=${page}&limit=${limit}`);
+}
+
+export async function getCourse(id){
+    return request(`/cursos/${id}`);
+}
+
+export async function enrollInCourse(id, token){
+    return request(`/cursos/${id}/inscripcion`,{ 
+        method: "POST", 
+        token
+    });
+}
