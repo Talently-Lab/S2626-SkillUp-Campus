@@ -8,8 +8,12 @@ const authLimiter = require('../middlewares/authLimiter');
 router.post('/register', authLimiter, validacionRegistro, registrar);
 router.post('/login', authLimiter, validacionLogin, login);
 
-router.get('/perfil', authMiddleware, (req, res) => {
-  res.json({ message: 'Acceso concedido', usuario: req.usuario });
+router.get('/perfil', authMiddleware, (req, res, next) => {
+  try {
+    res.json({ message: 'Acceso concedido', usuario: req.usuario });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

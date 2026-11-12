@@ -1,6 +1,4 @@
 function errorHandler(err, req, res, next) {
-  console.error(err);
-
   if (err.type === 'entity.parse.failed') {
     return res.status(400).json({
       status: 400,
@@ -68,10 +66,10 @@ function errorHandler(err, req, res, next) {
     return res.status(404).json({ error: err.message || 'Recurso no encontrado' });
   }
 
-  // Fallback genérico
+  // Fallback genérico (sin exponer mensajes o códigos internos de la base de datos)
+  console.error(err);
   return res.status(500).json({
     error: 'Error interno del servidor',
-    detalles: err.message,
   });
 }
 
