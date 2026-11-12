@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
+const { enviarCorreoBienvenida } = require('../services/emailService');
 
 const registrar = async (req, res, next) => {
   try {
@@ -8,6 +9,11 @@ const registrar = async (req, res, next) => {
 
     const hash = await bcrypt.hash(password, 10);
     const usuario = await Usuario.create({ nombre, email, password_hash: hash });
+
+    // El correo de bienvenida no debe bloquear ni hacer fallar el registro
+    enviarCorreoBienvenida({ nombre: usuario.nombre, email: usuario.email }).catch((err) => {
+      console.error('[email] Error al enviar correo de bienvenida:', err.message);
+    });
 
     return res.status(201).json({
       id: usuario.id,
