@@ -97,6 +97,13 @@ Para obtener una copia local del código fuente, ejecuta en tu terminal:
 
 > ℹ️ **Nota de red:** Una vez iniciado, la API REST estará disponible para recibir peticiones HTTP en la dirección `http://localhost:3000`.
 
+### 🚀 Despliegue en Producción (API Pública)
+* **URL Base:** `https://skillup-campus-api.onrender.com`
+* **Healthcheck:** `https://skillup-campus-api.onrender.com/health`
+* **Prefijo de endpoints:** `https://skillup-campus-api.onrender.com/api`
+
+> ⚠️ **Sleep Mode (Plan gratuito de Render):** Tras 15 minutos de inactividad, la instancia entra en reposo. La primera petición luego de ese período puede demorar entre 30 y 60 segundos mientras el servidor vuelve a iniciar.
+
 ---
 
 ### Levantamiento del Frontend (Aplicación Web)
