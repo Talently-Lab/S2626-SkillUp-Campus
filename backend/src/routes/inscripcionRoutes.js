@@ -7,6 +7,6 @@ const soloAdmin = require('../middlewares/soloAdmin');
 
 router.post('/cursos/:id/inscripcion', authMiddleware, validarId, inscribirse);
 router.get('/mis-inscripciones', authMiddleware, misInscripciones);
-router.get('/cursos/:id/inscriptos', authMiddleware, soloAdmin, inscriptosDeCurso);
+router.get('/cursos/:id/inscriptos', authMiddleware, soloAdmin, validarId, inscriptosDeCurso);
 
 module.exports = router;

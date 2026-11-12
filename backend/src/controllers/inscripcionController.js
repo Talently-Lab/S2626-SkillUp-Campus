@@ -73,9 +73,9 @@ const misInscripciones = async (req, res, next) => {
 
 const inscriptosDeCurso = async (req, res, next) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
 
-    const curso = Number.isNaN(id) ? null : await Curso.findByPk(id);
+    const curso = await Curso.findByPk(id);
     if (!curso) {
       const error = new Error('Curso no encontrado');
       error.status = 404;

@@ -2,6 +2,7 @@ const { body, validationResult } = require('express-validator');
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CONTROL_CHARACTERS_REGEX = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/;
+const PG_MAX_INT = 2147483647;
 
 const crearErrorValidacion = (errors) => {
   const error = new Error('La solicitud contiene datos inválidos o incompletos.');
@@ -89,7 +90,7 @@ const validarBody = (schema, { alMenosUnCampo = false } = {}) => (req, res, next
 
     if (regla.type === 'integer') {
       const parsed = typeof value === 'string' && /^\d+$/.test(value) ? Number(value) : value;
-      if (!Number.isSafeInteger(parsed) || (regla.min !== undefined && parsed < regla.min)) {
+      if (!Number.isSafeInteger(parsed) || parsed > PG_MAX_INT || (regla.min !== undefined && parsed < regla.min)) {
         errors.push({ field, message: regla.message, code: 'INVALID_VALUE' });
       } else {
         req.body[field] = parsed;
@@ -115,14 +116,15 @@ const validarBody = (schema, { alMenosUnCampo = false } = {}) => (req, res, next
 };
 
 const validarId = (req, res, next) => {
-  if (!/^\d+$/.test(req.params.id) || !Number.isSafeInteger(Number(req.params.id)) || Number(req.params.id) < 1) {
+  const num = Number(req.params.id);
+  if (!/^\d+$/.test(req.params.id) || !Number.isSafeInteger(num) || num < 1 || num > PG_MAX_INT) {
     return next(crearErrorValidacion([{
       field: 'id',
       message: 'Debe ser un identificador entero positivo.',
       code: 'INVALID_VALUE',
     }]));
   }
-  req.params.id = Number(req.params.id);
+  req.params.id = num;
   return next();
 };
 
@@ -131,7 +133,8 @@ const validarPaginacion = (req, res, next) => {
   const pagination = {};
   ['page', 'limit'].forEach((field) => {
     if (req.query[field] === undefined) return;
-    if (!/^\d+$/.test(req.query[field]) || !Number.isSafeInteger(Number(req.query[field])) || Number(req.query[field]) < 1) {
+    const num = Number(req.query[field]);
+    if (!/^\d+$/.test(req.query[field]) || !Number.isSafeInteger(num) || num < 1 || num > PG_MAX_INT) {
       errors.push({
         field,
         message: 'Debe ser un entero positivo.',
@@ -139,12 +142,13 @@ const validarPaginacion = (req, res, next) => {
       });
       return;
     }
-    pagination[field] = Number(req.query[field]);
+    pagination[field] = num;
   });
 
   const page = pagination.page || 1;
   const limit = Math.min(pagination.limit || 10, 100);
-  if (!Number.isSafeInteger((page - 1) * limit)) {
+  const offset = (page - 1) * limit;
+  if (!Number.isSafeInteger(offset) || offset > PG_MAX_INT) {
     errors.push({
       field: 'page',
       message: 'El número de página es demasiado grande.',
@@ -187,7 +191,13 @@ const validacionRegistro = [
     .isEmail().withMessage('Debe ser una dirección de email válida.')
     .bail()
     .isLength({ max: 254 }).withMessage('No puede superar 254 caracteres.')
-    .normalizeEmail(),
+    .normalizeEmail({
+      gmail_remove_dots: false,
+      gmail_remove_subaddress: false,
+      outlookdotcom_remove_subaddress: false,
+      yahoo_remove_subaddress: false,
+      icloud_remove_subaddress: false,
+    }),
   body('password')
     .exists().withMessage('Este campo es obligatorio.')
     .bail()
